@@ -1,4 +1,4 @@
-class cliente():
+class Cliente():
 
     #Inicializamos atributos
     def __init__(self, NIF : str, nombre : str, apellidos : str, telefono: str, email : str):
