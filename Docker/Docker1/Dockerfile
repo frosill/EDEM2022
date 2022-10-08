@@ -5,4 +5,4 @@ RUN apt-get install -y git
 
 EXPOSE 80
 
-CMD git --version
+ENTRYPOINT [ "git --version" ]
