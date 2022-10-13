@@ -9,7 +9,7 @@ def cuadrados(muestra):
   for n in muestra:
     resultados.append(n**2)
 
-  print(*resultados)
+  return resultados
   
     
     
