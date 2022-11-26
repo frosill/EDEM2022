@@ -74,12 +74,14 @@ public class Step2WordCountProcessor {
                                 "and send the result (counter, word) to the Kafka topic Step3Consumer.OUTPUT_TOPIC\n");
                         return KeyValue.pair(key, value);
                 }))
+
                 .flatMapValues(value -> Arrays.asList(pattern.split(value.toLowerCase())))
                 .groupBy((keyIgnored, word) -> word)
                 .count();
 
-        wordCounts.toStream().to(Step3Consumer.OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
-
+        //wordCounts.toStream().to(Step3Consumer.OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+        //wordCounts.toStream().filter((s, aLong) -> s.length() > 3).to(Step3Consumer.OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+        wordCounts.toStream().filter((s, aLong) -> s.length() > 3 && aLong > 10000).to(Step3Consumer.OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
     }
 
 }
