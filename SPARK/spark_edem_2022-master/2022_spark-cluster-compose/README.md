@@ -102,7 +102,7 @@ bash /spark/bin/spark-submit --master spark://spark-master:7077 /opt/spark-apps/
 If you want to avoid all the INFO logs when running our app, you can copy a custom log4j2.properties file to the node by running:
 
 ```sh
-ocker cp env/log4j2.properties <master_container_ID>:/spark/conf/log4j2.properties
+docker cp env/log4j2.properties <master_container_ID>:/spark/conf/log4j2.properties
 ```
 
 You can  find <master_container_ID> by running on **YOUR HOST CONSOLE** (not into containers):
