@@ -25,7 +25,7 @@ public class ProducerDemoWithCallback {
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
 
-        // send many data
+        // send several data data (10 messages)
         for (int i=0 ; i<10 ; i++){
 
             // Create a producer record
