@@ -1,8 +1,6 @@
 package org.example.kafka;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +24,35 @@ public class ProducerDemoWithCallback {
         // Create the producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
-        // Create a producer record
-        ProducerRecord<String, String > producerRecord =
-                new ProducerRecord<>("demo_java", "Hello World!");
 
-        // send data - asynchronous operation
-        producer.send(producerRecord);
+        // send many data
+        for (int i=0 ; i<10 ; i++){
+
+            // Create a producer record
+            ProducerRecord<String, String > producerRecord =
+                    new ProducerRecord<>("demo_java", "Hello World!" + i);
+
+            // send data - asynchronous operation
+            producer.send(producerRecord, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata metadata, Exception e) {
+                    // executes every time a record has been successfully sent or an exception is thrown
+                    if (e == null) {
+                        // the record was successfully sent
+                        log.info("Received new metadata/ \n" +
+                                "Topic: " + metadata.topic() + "\n" +
+                                "Partition: " + metadata.partition() + "\n" +
+                                "Offset: " + metadata.offset() + "\n" +
+                                "Timestamp: " + metadata.timestamp());
+                    } else {
+                        log.error("Error while producing", e);
+
+                    }
+                }
+            });
+            // Messages are sent round robin
+
+        }
 
         // flush data
         producer.flush();
